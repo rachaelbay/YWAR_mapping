@@ -1,14 +1,3 @@
----
-title: "Yellow Warbler Genoscape"
-author: "Rachael Bay"
-date: "5/2/2017"
-output: html_document
----
+##Yellow Warbler Genoscape
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## R Markdown
-
-This repository includes the processed data and code for analysis of Yellow Warbler population structure and connectivity
+This repository contains the processed data and scripts for investigating Yellow Warbler population structure and connectivity
