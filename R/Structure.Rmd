@@ -13,12 +13,14 @@ library(tidyverse)
 library(raster)
 library(ggmap)
 library(ggspatial)
+library(knitr)
+knitr::opts_chunk$set(dev="png")
 
 ####Read in qmatrices
-K2 <- read.delim("../structure_out/96snps_qmat/K2.txt",row.names=1,header=F)
-K3 <- read.delim("../structure_out/96snps_qmat/K3.txt",row.names=1,header=F)
-K4 <- read.delim("../structure_out/96snps_qmat/K4.txt",row.names=1,header=F)
-K5 <- read.delim("../structure_out/96snps_qmat/K5.txt",row.names=1,header=F)
+K2 <- read.delim("../structure_out/96snps_qmat/randomrun/K2.txt",row.names=1,header=F)
+K3 <- read.delim("../structure_out/96snps_qmat/randomrun/K3.txt",row.names=1,header=F)
+K4 <- read.delim("../structure_out/96snps_qmat/randomrun/K4.txt",row.names=1,header=F)
+K5 <- read.delim("../structure_out/96snps_qmat/randomrun/K5.txt",row.names=1,header=F)
 
 ###Read and order meta
 raw <- read.delim("../data/metadata/Fluidigm_meta_03.20.17.txt")
@@ -111,19 +113,19 @@ axis(1,at=mids,labels=ordercoords$Fakepop,las=2,cex.axis=1.3,tck=0,lwd=0)
 Now we want to spatially interpolate structure results onto a map
 
 First we read in the shape file
-```{r shapefile,warnings=FALSE,message=F}
+```{r shapefile,warnings=FALSE,message=F,dpi=36, out.width="600px", out.height="600px"}
 range <- readOGR("../data/shapefile/",layer="YWAR")
 breeding <- subset(range,SEASONAL==2)
 breeding <- crop(breeding,extent(-170,-55,30,70))
 palette <- CreatePalette(brewer.pal(8,"Set2"))
 
-plotK <- K5order[,1:5]
+plotK <- K3order[,1:3]
 stack <- tess3Q_map_rasters(as.matrix(plotK),as.matrix(ordermeta[,c("Long","Lat")]),method="map.max", interpol = FieldsKrigModel(10),  
      main = "Ancestry coefficients",
      xlab = "Longitude", ylab = "Latitude", 
      resolution = c(300,300), cex = .4,
      col.palette = palette, map.polygon = breeding)
-plot(stack)
+#plot(stack)
 names(stack) <- paste0("grp",1:ncol(plotK))
 maxes <- max(stack)
 keep <- stack>=maxes
